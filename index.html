@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html>
+  <script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$','$$'], ['\\[','\\]']],
+      processEscapes: true
+    },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="CGCE: Classifier-Guided Concept Erasure in Generative Models.">
+  <meta name="keywords" content="Concept Erasure, Generative Models, T2I, T2V">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CGCE</title>
+  
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+           <h1 class="title is-1 publication-title"><span class="cgce-title">CGCE</span> <img src="./static/figures/eraser.png" alt="Eraser" style="height: 1.3em; vertical-align: middle; margin-left: 0em; margin-bottom: 0.35em; margin-right: 0.1em;">: Classifier-Guided Concept Erasure in Generative Models</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://viettmab.github.io/">Viet Nguyen </a>,
+            </span>
+            <span class="author-block">
+              <a href="https://engineering.jhu.edu/vpatel36/team/vishalpatel/">Vishal M Patel</a>
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">Johns Hopkins University</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <!-- <span class="link-block">
+                <a href="./static/figures/cgce.pdf"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span> -->
+              <span class="link-block">
+                <a href="https://arxiv.org/"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/viettmab/CGCE"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+        <img src="./static/figures/teaser.png" alt="Toby" id="toby" style="height: 100%;">
+      <h2 class="subtitle has-text-centered">
+         <span class="cgce-highlight">CGCE</span>: A novel plug-and-play framework for robust and high-fidelity concept erasure. Sensitive content (*) has been masked for publication.
+      </h2>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Recent advancements in large-scale generative models have enabled the creation of high-quality images and videos, but have also raised significant safety concerns regarding the generation of unsafe content. To mitigate this, concept erasure methods have been developed to remove undesirable concepts from pre-trained models. However, existing methods remain vulnerable to adversarial attacks that can regenerate the erased content. Moreover, achieving robust erasure often degrades the model's generative quality for safe, unrelated concepts, creating a difficult trade-off between safety and performance. To address this challenge, we introduce Classifier-Guided Concept Erasure (<span class="cgce-highlight">CGCE</span>), a novel plug-and-play framework that provides robust concept erasure for diverse generative models without altering their original weights. <span class="cgce-highlight">CGCE</span> uses a lightweight classifier operating on text embeddings to first detect and then refine prompts containing undesired concepts. This approach is highly scalable, allowing for multi-concept erasure by aggregating guidance from several classifiers. By modifying only unsafe embeddings at inference time, our method prevents harmful content generation while preserving the model's original quality on benign prompts. Extensive experiments show that <span class="cgce-highlight">CGCE</span> achieves <b>state-of-the-art</b> robustness against a wide range of red-teaming attacks. Our approach also maintains high generative utility, demonstrating a superior balance between safety and performance. We showcase the versatility of <span class="cgce-highlight">CGCE</span> through its successful application to various modern T2I and T2V models, establishing it as a practical and effective solution for safe generative AI. The code and data will be made publicly available after the review process.
+          </p>
+          <p>
+            
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+
+    <!--/ Paper video. -->
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <!--/ Matting. -->
+
+    <!-- Animation. -->
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Our Approach</h2>
+        <div class="columns is-centered">
+        <div class="column is-12"> <!-- wider column -->
+          <figure class="image" style="max-width:1100px; margin:0 auto;">
+            <img src="./static/figures/method.png" alt="Method" style="width:100%; height:auto;">
+          </figure>
+        </div>
+      </div>
+
+        <!-- Interpolating. -->     
+        <div class="content has-text-justified">
+          <p>
+            <br> <b>Overview of <span class="cgce-highlight">CGCE</span></b>. <b>Stage 1:</b> LLM is used to create a dataset of paired prompts, each containing a safe prompt and a semantically similar unsafe version. <b>Stage 2:</b> A lightweight classifier is trained on the embeddings of these prompts to distinguish between safe and unsafe content. <b>Stage 3:</b> At inference time, the trained classifier acts as a plug-and-play safeguard. If an input prompt is safe, its embedding is passed directly to the generative model. If unsafe, the classifier then acts as a refiner, using its own gradients to iteratively modify the embedding. This process steers the embedding away from the harmful concept before it is passed to the T2I or T2V model to ensure a safe final output.
+          </p>
+        </div>
+
+
+      </div>
+    </div>
+    <!--/ Animation. -->
+
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <!--/ Matting. -->
+
+    <!-- Animation. -->
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Quantitative Results</h2>
+
+        <!-- Interpolating. -->
+        <h3 class="title is-5">Main Results in SD-v1.4</h3>
+        <div class="content has-text-justified">
+          <p>
+            Attack Success Rate (ASR) and generation quality comparison of concept erasure methods for <b>nudity removal</b> task. 
+          </p>
+        </div>
+        <div class="columns is-centered">
+          <div class="column is-9">
+            <figure class="image">
+              <img src="./static/figures/quantitative_sd14_nudity.png" alt="SD-v1.4 Nudity Removal Results">
+            </figure>
+          </div>
+        </div>
+        <div class="content has-text-justified">
+          <p>
+            ASR comparison of concept erasure methods for <b>Van Gogh art style removal</b> task under the UDA attack.
+          </p>
+        </div>
+        <div class="columns is-centered">
+          <div class="column is-9">
+            <figure class="image">
+              <img src="./static/figures/quantitative_sd14_vangogh.png" alt="SD-v1.4 Van Gogh Art Style Removal Results">
+            </figure>
+          </div>
+        </div>
+        <div class="content has-text-justified">
+          <p>
+            ASR comparison of concept erasure methods for <b>Church removal</b> task under the UDA attack.
+          </p>
+        </div>
+        <div class="columns is-centered">
+          <div class="column is-9">
+            <figure class="image">
+              <img src="./static/figures/quantitative_sd14_church.png" alt="SD-v1.4 Church Removal Results">
+            </figure>
+          </div>
+        </div>
+        
+        <br/>
+        <h3 class="title is-5">Generalization Across Diverse T2I Architectures</h3>
+        <div class="content has-text-justified">
+          <p>
+            ASR comparsion on T2I architectures.
+          </p>
+        </div>
+        <div class="columns is-centered">
+          <div class="column is-8">
+            <figure class="image">
+              <img src="./static/figures/quantitative_t2i.png" alt="T2I Generalization Results">
+            </figure>
+          </div>
+        </div>
+
+        <h3 class="title is-5">Extension to T2V Generation</h3>
+        <div class="content has-text-justified">
+          <p>
+            ASR comparsion on T2V architectures.
+          </p>
+        </div>
+        <div class="columns is-centered">
+          <div class="column is-8">
+            <figure class="image">
+              <img src="./static/figures/quantitative_t2v.png" alt="T2V Generalization Results">
+            </figure>
+          </div>
+        </div>
+        
+        <h3 class="title is-5"> Efficiency Analysis</h3>
+        <div class="content has-text-justified">
+          <p>
+            Efficiency comparison for the <b>nudity removal</b> task with SD-v1.4 backbone. All experiments were run on a single NVIDIA A6000 GPU, with reported times representing the average over 50 generated images using 50 denoising steps.
+          </p>
+        </div>
+        <div class="columns is-centered">
+          <div class="column is-8">
+            <figure class="image">
+              <img src="static/figures/compare_time.png" alt="Efficiency Comparison">
+            </figure>
+          </div>
+        </div>
+
+        <h3 class="title is-5">Ablation Study</h3>
+        <div class="content has-text-justified">
+          <p>
+            Ablation study on the step size of the refinement process.
+          </p>
+        </div>
+        <div class="columns is-centered">
+          <div class="column is-8">
+            <figure class="image">
+              <img src="./static/figures/ablation_step_size.png" alt="Ablation Study on Step Size">
+            </figure>
+          </div>
+        </div>
+        
+
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Qualitative Results</h2>
+
+        <h3 class="title is-5">SD-v1.4</h3>
+        <div class="content has-text-justified">
+          <p>
+            Qualitative evaluation of <span class="cgce-highlight">CGCE</span> and other concept erasure methods on the SD-v1.4 backbone. The figure compares performance on <b>nudity erasure</b>, evaluating each method's ability to remove the target concept while preserving unrelated ones. Sensitive content (*) has been masked for publication.
+          </p>
+        </div>
+        <div class="columns is-centered">
+          <div class="column is-10">
+            <figure class="image">
+              <img src="./static/figures/qualitative_sd14_nudity.png" alt="SD-v1.4 Nudity Removal Qualitative Results">
+            </figure>
+          </div>
+        </div>
+        <div class="content has-text-justified">
+          <p>
+            Qualitative evaluation of <span class="cgce-highlight">CGCE</span> and other concept erasure methods on the SD-v1.4 backbone. The figure compares performance on <b>Van Gogh style erasure</b> (left) and <b>Church object erasure</b> (right), evaluating each method's ability to remove the target concept while preserving unrelated ones.
+          </p>
+        </div>
+        <div class="columns is-centered">
+          <div class="column is-10">
+            <figure class="image">
+              <img src="./static/figures/qualitative_sd14_vangogh_church.png" alt="SD-v1.4 Van Gogh Style and Church Object Removal Qualitative Results">
+            </figure>
+          </div>
+        </div>
+        <h3 class="title is-5">Multi-Concept Erasure</h3>
+        <div class="content has-text-justified">
+          <p>
+            Qualitative evaluation of <span class="cgce-highlight">CGCE</span>'s effectiveness in erasing <b>multiple concepts</b>, compared to baseline methods. Sensitive content (*) has been masked for publication.
+          </p>
+        </div>
+        <div class="columns is-centered">
+          <div class="column is-10">
+            <figure class="image">
+              <img src="./static/figures/multi_concept.png" alt="Multi-Concept Erasure Qualitative Results">
+            </figure>
+          </div>
+        </div>
+        <h3 class="title is-5">Modern T2I Architectures</h3>
+        <div class="content has-text-justified">
+          <p>
+            Qualitative evaluation of <span class="cgce-highlight">CGCE</span>'s effectiveness in erasing <b>nudity concepts</b>, compared to baseline methods across different T2I architectures. Sensitive content (*) has been masked for publication.
+          </p>
+        </div>
+        <div class="columns is-centered">
+          <div class="column is-10">
+            <div class="carousel-container" style="position: relative;">
+              <div class="carousel-slides">
+                <div class="carousel-slide active" data-slide="0">
+                  <figure class="image">
+                    <img src="./static/figures/qualitative_sd3_flux.png" alt="SD-v3 and FLUX Qualitative Results">
+                  </figure>
+                </div>
+                <div class="carousel-slide" data-slide="1" style="display: none;">
+                  <figure class="image">
+                    <img src="./static/figures/qualitative_switti_infinity.png" alt="Switti and Infinity Qualitative Results">
+                  </figure>
+                </div>
+              </div>
+              
+              <!-- Navigation arrows -->
+              <button class="carousel-arrow carousel-arrow-left" onclick="changeSlide(-1, 'modern-t2i')" style="position: absolute; left: -40px; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.5); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; font-size: 18px; z-index: 10;">
+                &#8249;
+              </button>
+              <button class="carousel-arrow carousel-arrow-right" onclick="changeSlide(1, 'modern-t2i')" style="position: absolute; right: -40px; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.5); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; font-size: 18px; z-index: 10;">
+                &#8250;
+              </button>
+              
+              <!-- Slide indicators -->
+              <div class="carousel-indicators" style="text-align: center; margin-top: 15px;">
+                <span class="indicator active" onclick="goToSlide(0, 'modern-t2i')" style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: #333; margin: 0 5px; cursor: pointer;"></span>
+                <span class="indicator" onclick="goToSlide(1, 'modern-t2i')" style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: #ccc; margin: 0 5px; cursor: pointer;"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h3 class="title is-5">Modern T2V Architectures</h3>
+        <div class="content has-text-justified">
+          <p>
+            Qualitative evaluation of <span class="cgce-highlight">CGCE</span>'s effectiveness in erasing <b>nudity concepts</b>, compared to baseline methods across different T2V architectures. Sensitive content (*) has been masked for publication.
+          </p>
+        </div>
+        <div class="columns is-centered">
+          <div class="column is-10">
+            <div class="carousel-container" style="position: relative;">
+              <div class="carousel-slides">
+                <div class="carousel-slide active" data-slide="0" data-carousel="t2v">
+                  <figure class="image">
+                    <img src="./static/figures/qualitative_cogx_2b_1.png" alt="CogVideoX-2B Qualitative Results 1">
+                  </figure>
+                </div>
+                <div class="carousel-slide" data-slide="1" data-carousel="t2v" style="display: none;">
+                  <figure class="image">
+                    <img src="./static/figures/qualitative_cogx_2b_2.png" alt="CogVideoX-2B Qualitative Results 2">
+                  </figure>
+                </div>
+                <div class="carousel-slide" data-slide="2" data-carousel="t2v" style="display: none;">
+                  <figure class="image">
+                    <img src="./static/figures/qualitative_cogx_5b_1.png" alt="CogVideoX-5B Qualitative Results 1">
+                  </figure>
+                </div>
+                <div class="carousel-slide" data-slide="3" data-carousel="t2v" style="display: none;">
+                  <figure class="image">
+                    <img src="./static/figures/qualitative_cogx_5b_2.png" alt="CogVideoX-5B Qualitative Results 2">
+                  </figure>
+                </div>
+                <div class="carousel-slide" data-slide="4" data-carousel="t2v" style="display: none;">
+                  <figure class="image">
+                    <img src="./static/figures/qualitative_hunyuan_1.png" alt="Hunyuan Qualitative Results 1">
+                  </figure>
+                </div>
+                <div class="carousel-slide" data-slide="5" data-carousel="t2v" style="display: none;">
+                  <figure class="image">
+                    <img src="./static/figures/qualitative_hunyuan_2.png" alt="Hunyuan Qualitative Results 2">
+                  </figure>
+                </div>
+              </div>
+              
+              <!-- Navigation arrows -->
+              <button class="carousel-arrow carousel-arrow-left" onclick="changeSlide(-1, 'modern-t2v')" style="position: absolute; left: -40px; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.5); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; font-size: 18px; z-index: 10;">
+                &#8249;
+              </button>
+              <button class="carousel-arrow carousel-arrow-right" onclick="changeSlide(1, 'modern-t2v')" style="position: absolute; right: -40px; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.5); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; font-size: 18px; z-index: 10;">
+                &#8250;
+              </button>
+              
+              <!-- Slide indicators -->
+              <div class="carousel-indicators" style="text-align: center; margin-top: 15px;">
+                <span class="indicator active" onclick="goToSlide(0, 'modern-t2v')" style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: #333; margin: 0 5px; cursor: pointer;"></span>
+                <span class="indicator" onclick="goToSlide(1, 'modern-t2v')" style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: #ccc; margin: 0 5px; cursor: pointer;"></span>
+                <span class="indicator" onclick="goToSlide(2, 'modern-t2v')" style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: #ccc; margin: 0 5px; cursor: pointer;"></span>
+                <span class="indicator" onclick="goToSlide(3, 'modern-t2v')" style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: #ccc; margin: 0 5px; cursor: pointer;"></span>
+                <span class="indicator" onclick="goToSlide(4, 'modern-t2v')" style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: #ccc; margin: 0 5px; cursor: pointer;"></span>
+                <span class="indicator" onclick="goToSlide(5, 'modern-t2v')" style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: #ccc; margin: 0 5px; cursor: pointer;"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>
+       @article{nguyen2025cgce,
+         title={CGCE: Classifier-Guided Concept Erasure in Generative Models},
+         author={Nguyen, Viet and Patel, Vishal M},
+         journal={arXiv preprint arXiv:},
+         year={2025}
+        }
+</code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <a class="icon-link"
+         href="./static/images/srdd.pdf">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+      <a class="icon-link" href="https://github.com/VIROBO-15/SRDD" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is licensed under a <a rel="license"
+                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+          <p>
+            Acknowledgement: The website Template taken from  <a
+              href="https://github.com/nerfies/nerfies.github.io">Nerfies</a> 
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
