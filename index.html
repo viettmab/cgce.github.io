@@ -33,12 +33,24 @@
         href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
   <link rel="stylesheet" href="./static/css/index.css">
   <link rel="icon" href="./static/images/favicon.svg">
+  <style>
+    #mapmyvisitors { display: none !important; }
+    .mapmyvisitors { display: none !important; }
+    div[id*="mapmyvisitors"] { display: none !important; }
+    div[class*="mapmyvisitors"] { display: none !important; }
+    iframe[src*="mapmyvisitors"] { display: none !important; }
+    script[src*="mapmyvisitors"] + div { display: none !important; }
+    script[src*="mapmyvisitors"] + iframe { display: none !important; }
+    [id*="mmv"] { display: none !important; }
+    [class*="mmv"] { display: none !important; }
+  </style>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script defer src="./static/js/fontawesome.all.min.js"></script>
   <script src="./static/js/bulma-carousel.min.js"></script>
   <script src="./static/js/bulma-slider.min.js"></script>
   <script src="./static/js/index.js"></script>
+  <script type="text/javascript" id="mapmyvisitors" src="//mapmyvisitors.com/map.js?d=3QJm4LxA78YtMMu1PFx81wIhIvipwlEg5kVUwtdsMdk&cl=ffffff&w=a"></script>
 </head>
 <body>
 
@@ -50,11 +62,11 @@
         <div class="column has-text-centered">
            <h1 class="title is-1 publication-title"><span class="cgce-title">CGCE</span> <img src="./static/figures/eraser.png" alt="Eraser" style="height: 1.3em; vertical-align: middle; margin-left: 0em; margin-bottom: 0.35em; margin-right: 0.1em;">: Classifier-Guided Concept Erasure in Generative Models</h1>
           <div class="is-size-5 publication-authors">
-            <span class="author-block">
-              <a href="https://viettmab.github.io/">Viet Nguyen </a>,
+            <span class="author-block" style="margin-right: 1em;">
+              <a href="https://viettmab.github.io/">Viet Nguyen </a>
             </span>
-            <span class="author-block">
-              <a href="https://engineering.jhu.edu/vpatel36/team/vishalpatel/">Vishal M Patel</a>
+            <span class="author-block" style="margin-left: 1em;">
+              <a href="https://engineering.jhu.edu/vpatel36/team/vishalpatel/">Vishal M. Patel</a>
             </span>
           </div>
 
@@ -75,7 +87,7 @@
                 </a>
               </span> -->
               <span class="link-block">
-                <a href="https://arxiv.org/"
+                <a href="https://arxiv.org/abs/2511.05865"
                    class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
                       <i class="ai ai-arxiv"></i>
@@ -107,7 +119,7 @@
     <div class="hero-body">
         <img src="./static/figures/teaser.png" alt="Toby" id="toby" style="height: 100%;">
       <h2 class="subtitle has-text-centered">
-         <span class="cgce-highlight">CGCE</span>: A novel plug-and-play framework for robust and high-fidelity concept erasure. Sensitive content (*) has been masked for publication.
+         <span class="cgce-highlight">CGCE</span>: An efficient plug-and-play framework for robust and high-fidelity concept erasure. Sensitive content (*) has been masked for publication.
       </h2>
     </div>
   </div>
@@ -121,7 +133,7 @@
         <h2 class="title is-3">Abstract</h2>
         <div class="content has-text-justified">
           <p>
-            Recent advancements in large-scale generative models have enabled the creation of high-quality images and videos, but have also raised significant safety concerns regarding the generation of unsafe content. To mitigate this, concept erasure methods have been developed to remove undesirable concepts from pre-trained models. However, existing methods remain vulnerable to adversarial attacks that can regenerate the erased content. Moreover, achieving robust erasure often degrades the model's generative quality for safe, unrelated concepts, creating a difficult trade-off between safety and performance. To address this challenge, we introduce Classifier-Guided Concept Erasure (<span class="cgce-highlight">CGCE</span>), a novel plug-and-play framework that provides robust concept erasure for diverse generative models without altering their original weights. <span class="cgce-highlight">CGCE</span> uses a lightweight classifier operating on text embeddings to first detect and then refine prompts containing undesired concepts. This approach is highly scalable, allowing for multi-concept erasure by aggregating guidance from several classifiers. By modifying only unsafe embeddings at inference time, our method prevents harmful content generation while preserving the model's original quality on benign prompts. Extensive experiments show that <span class="cgce-highlight">CGCE</span> achieves <b>state-of-the-art</b> robustness against a wide range of red-teaming attacks. Our approach also maintains high generative utility, demonstrating a superior balance between safety and performance. We showcase the versatility of <span class="cgce-highlight">CGCE</span> through its successful application to various modern T2I and T2V models, establishing it as a practical and effective solution for safe generative AI. The code and data will be made publicly available after the review process.
+            Recent advancements in large-scale generative models have enabled the creation of high-quality images and videos, but have also raised significant safety concerns regarding the generation of unsafe content. To mitigate this, concept erasure methods have been developed to remove undesirable concepts from pre-trained models. However, existing methods remain vulnerable to adversarial attacks that can regenerate the erased content. Moreover, achieving robust erasure often degrades the model's generative quality for safe, unrelated concepts, creating a difficult trade-off between safety and performance. To address this challenge, we introduce Classifier-Guided Concept Erasure (<span class="cgce-highlight">CGCE</span>), an efficient plug-and-play framework that provides robust concept erasure for diverse generative models without altering their original weights. <span class="cgce-highlight">CGCE</span> uses a lightweight classifier operating on text embeddings to first detect and then refine prompts containing undesired concepts. This approach is highly scalable, allowing for multi-concept erasure by aggregating guidance from several classifiers. By modifying only unsafe embeddings at inference time, our method prevents harmful content generation while preserving the model's original quality on benign prompts. Extensive experiments show that <span class="cgce-highlight">CGCE</span> achieves <b>state-of-the-art</b> robustness against a wide range of red-teaming attacks. Our approach also maintains high generative utility, demonstrating a superior balance between safety and performance. We showcase the versatility of <span class="cgce-highlight">CGCE</span> through its successful application to various modern T2I and T2V models, establishing it as a practical and effective solution for safe generative AI. The code and data will be made publicly available after the review process.
           </p>
           <p>
             
@@ -441,7 +453,7 @@
        @article{nguyen2025cgce,
          title={CGCE: Classifier-Guided Concept Erasure in Generative Models},
          author={Nguyen, Viet and Patel, Vishal M},
-         journal={arXiv preprint arXiv:},
+         journal={arXiv preprint arXiv:2511.05865},
          year={2025}
         }
 </code></pre>
@@ -452,11 +464,7 @@
 <footer class="footer">
   <div class="container">
     <div class="content has-text-centered">
-      <a class="icon-link"
-         href="./static/images/srdd.pdf">
-        <i class="fas fa-file-pdf"></i>
-      </a>
-      <a class="icon-link" href="https://github.com/VIROBO-15/SRDD" class="external-link" disabled>
+      <a class="icon-link" href="https://github.com/viettmab/CGCE" class="external-link" disabled>
         <i class="fab fa-github"></i>
       </a>
     </div>
